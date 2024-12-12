@@ -6,7 +6,6 @@ from helpers import Helper
 class TestCreateUser:
 
     @allure.title("Проверка наличия токена доступа при создании уникального пользователя")
-    @allure.step("Регистрация уникального пользователя и проверка наличия токена доступа в ответе")
     def test_create_unique_user_token_present(self):
         user_data = {
             "email": Helper.generate_unique_email(),
@@ -18,9 +17,9 @@ class TestCreateUser:
 
         # Проверка наличия токена в ответе
         assert "accessToken" in response, "Токен доступа не найден в ответе"
+        assert response.status_code == 200, f"Expected status code 200, but got {response.status_code}"
 
     @allure.title("Проверка успешного создания уникального пользователя")
-    @allure.step("Регистрация уникального пользователя и проверка флага успеха в ответе")
     def test_create_unique_user_success(self):
         user_data = {
             "email": Helper.generate_unique_email(),
@@ -34,7 +33,6 @@ class TestCreateUser:
         assert response.get("success") == True, f"Expected success: True, got {response.get('success')}"
 
     @allure.title("Проверка ошибки при создании уже существующего пользователя")
-    @allure.step("Попытка регистрации существующего пользователя и проверка выбрасываемого исключения")
     def test_create_existing_user_raises_exception(self, create_test_user):
         user_data, _ = create_test_user
         with pytest.raises(ValueError) as exc_info:
@@ -44,7 +42,6 @@ class TestCreateUser:
         assert "User already exists" in str(exc_info.value), "Сообщение об ошибке отличается"
 
     @allure.title("Проверка кодов статуса при создании пользователя с отсутствующими обязательными полями")
-    @allure.step("Регистрация пользователя с отсутствующими обязательными полями и проверка кодов статуса")
     @pytest.mark.parametrize(
         "user_data, expected_status_code",
         [
@@ -63,7 +60,6 @@ class TestCreateUser:
         ResponseValidator.check_status_code(response, expected_status_code)
 
     @allure.title("Проверка сообщений об ошибке при создании пользователя с отсутствующими обязательными полями")
-    @allure.step("Регистрация пользователя с отсутствующими обязательными полями и проверка сообщения об ошибке")
     @pytest.mark.parametrize(
         "user_data, expected_message",
         [

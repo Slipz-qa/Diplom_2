@@ -5,7 +5,6 @@ from methods import UserActions
 class TestCreateOrder:
 
     @allure.title("Создание заказа с авторизацией")
-    @allure.step("Отправка запроса на создание заказа с авторизацией и проверка статуса и ответа")
     def test_create_order_with_auth(self, auth_token, ingredients):
         order_data = {"ingredients": ingredients}
         response = UserActions.send_create_order_request(order_data, auth_token)
@@ -18,7 +17,6 @@ class TestCreateOrder:
         assert "order" in response_json, "Order key is missing in the response"
 
     @allure.title("Создание заказа без авторизации")
-    @allure.step("Отправка запроса на создание заказа без авторизации и проверка статуса и ответа")
     def test_create_order_without_auth(self, ingredients):
         order_data = {"ingredients": ingredients}
         response = UserActions.send_create_order_request(order_data)
@@ -31,7 +29,6 @@ class TestCreateOrder:
         assert "order" in response_json, "Order key is missing in the response"
 
     @allure.title("Создание заказа с некорректными ингредиентами")
-    @allure.step("Отправка запроса на создание заказа с некорректными ингредиентами и проверка статуса и сообщения об ошибке")
     def test_create_order_with_invalid_ingredients(self, auth_token):
         invalid_ingredients = ["invalid_hash"]
         order_data = {"ingredients": invalid_ingredients}
@@ -45,7 +42,6 @@ class TestCreateOrder:
         assert response_json.get("message") == "One or more ids provided are incorrect", "Error message is incorrect"
 
     @allure.title("Создание заказа с пустыми ингредиентами")
-    @allure.step("Отправка запроса на создание заказа с пустым списком ингредиентов и проверка статуса и сообщения об ошибке")
     def test_create_order_with_empty_ingredients(self, auth_token):
         order_data = {"ingredients": []}
         response = UserActions.send_create_order_request(order_data, auth_token)

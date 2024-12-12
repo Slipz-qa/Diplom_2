@@ -5,7 +5,6 @@ from methods import UserActions
 class TestUserLogin:
 
     @allure.title("Проверка статус-кода при логине существующего пользователя")
-    @allure.step("Отправка запроса на логин существующего пользователя и проверка статус-кода")
     def test_login_existing_user_status_code(self, create_test_user):
         user_data, _ = create_test_user
         response = UserActions.make_request(
@@ -22,7 +21,6 @@ class TestUserLogin:
         assert isinstance(response_json, dict), "Response is not a valid JSON object"
 
     @allure.title("Проверка наличия accessToken в ответе при логине существующего пользователя")
-    @allure.step("Отправка запроса на логин существующего пользователя и проверка наличия accessToken в ответе")
     def test_login_existing_user_contains_access_token(self, create_test_user):
         user_data, _ = create_test_user
         response = UserActions.make_request(
@@ -39,7 +37,6 @@ class TestUserLogin:
         assert isinstance(response_json["accessToken"], str), "accessToken should be a string"
 
     @allure.title("Проверка флага успеха при логине существующего пользователя")
-    @allure.step("Отправка запроса на логин существующего пользователя и проверка флага успеха")
     def test_login_existing_user_success_flag(self, create_test_user):
         user_data, _ = create_test_user
         response = UserActions.make_request(
@@ -53,7 +50,6 @@ class TestUserLogin:
         assert response_json.get("success") is True, "Поле 'success' должно быть True при успешном логине"
 
     @allure.title("Проверка статус-кода при неверных данных для логина")
-    @allure.step("Отправка запроса на логин с неверными данными и проверка статус-кода")
     def test_login_invalid_credentials_status_code(self):
         user_data = {
             "email": "invalid_user@example.com",
@@ -73,7 +69,6 @@ class TestUserLogin:
         assert isinstance(response_json, dict), "Response is not a valid JSON object"
 
     @allure.title("Проверка сообщения об ошибке при неверных данных для логина")
-    @allure.step("Отправка запроса на логин с неверными данными и проверка сообщения об ошибке")
     def test_login_invalid_credentials_error_message(self):
         user_data = {
             "email": "invalid_user@example.com",

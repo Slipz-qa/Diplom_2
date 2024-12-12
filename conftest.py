@@ -5,20 +5,15 @@ import requests
 from helpers import Helper
 
 
-@pytest.fixture
-def user_data():
-    return {
-        "email": Helper.generate_unique_email(),
-        "password": "testpass123",
-        "name": "Test User"
-    }
 
 @pytest.fixture
-def auth_token(user_data):
-    UserActions.register_user(user_data)
-    response = UserActions.login_user(user_data)
-    response_json = response.json()
-    return response_json["accessToken"]
+def auth_token():
+
+    user_data = Helper.get_user_data()  # Получаем данные пользователя из data.py
+    UserActions.register_user(user_data)  # Регистрируем пользователя
+    response = UserActions.login_user(user_data)  # Логиним пользователя
+    response_json = response.json()  # Извлекаем JSON из ответа
+    return response_json["accessToken"]  # Возвращаем токен
 
 
 @pytest.fixture
